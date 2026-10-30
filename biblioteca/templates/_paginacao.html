@@ -1,0 +1,7 @@
+{% if paginas > 1 %}
+<nav class="paginacao">
+  {% if pagina > 1 %}<a href="{{ url_for(request.endpoint, pagina=pagina-1, **args) }}">« Anterior</a>{% endif %}
+  <span>Página {{ pagina }} de {{ paginas }}</span>
+  {% if pagina < paginas %}<a href="{{ url_for(request.endpoint, pagina=pagina+1, **args) }}">Próxima »</a>{% endif %}
+</nav>
+{% endif %}

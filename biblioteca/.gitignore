@@ -1,0 +1,9 @@
+venv/
+.venv/
+instance/
+*.db
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+relatorio_migracao_*.txt

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}Empréstimos{% endblock %}
+{% block conteudo %}
+<h1>Empréstimos e devoluções</h1>
+<h2>Novo empréstimo</h2>
+<form method="post" class="busca">
+  <input name="matricula_cpf" placeholder="Matrícula/CPF do usuário" required>
+  <input name="isbn" placeholder="ISBN do livro" required>
+  <button>Registrar empréstimo</button>
+</form>
+
+<h2>Empréstimos em aberto</h2>
+<table>
+  <tr><th>Usuário</th><th>Livro</th><th>Retirada</th><th>Devolução prevista</th><th></th></tr>
+  {% for e in ativos %}
+  <tr><td>{{ e.usuario.nome }}</td><td>{{ e.livro.titulo }}</td><td>{{ e.data_retirada.strftime('%d/%m/%Y') }}</td>
+    <td>{{ e.data_prevista.strftime('%d/%m/%Y') }}{% if e.data_prevista < hoje %} <span class="erro">(atrasado)</span>{% endif %}</td>
+    <td><form method="post" action="{{ url_for('views.devolver', emprestimo_id=e.id) }}"><button>Registrar devolução</button></form></td></tr>
+  {% else %}<tr><td colspan="5">Nenhum empréstimo em aberto.</td></tr>
+  {% endfor %}
+</table>
+
+<h2>Últimas devoluções</h2>
+<table>
+  <tr><th>Usuário</th><th>Livro</th><th>Devolvido em</th><th>Multa</th></tr>
+  {% for e in recentes %}
+  <tr><td>{{ e.usuario.nome }}</td><td>{{ e.livro.titulo }}</td><td>{{ e.data_devolucao.strftime('%d/%m/%Y') }}</td>
+    <td>{% if multas.get(e.id) %}{{ multas[e.id].valor|brl }} ({{ multas[e.id].dias_atraso }} dia(s)){% else %}-{% endif %}</td></tr>
+  {% else %}<tr><td colspan="4">Nenhuma devolução registrada.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

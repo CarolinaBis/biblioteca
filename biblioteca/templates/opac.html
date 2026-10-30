@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Catálogo público{% endblock %}
+{% block conteudo %}
+<h1>Catálogo público</h1>
+<p>Consulte o acervo completo sem precisar de login.</p>
+{% include "_busca.html" %}
+{% if categorias %}
+<p class="categorias"><strong>Categorias:</strong>
+  <a href="{{ url_for('views.opac') }}">Todas</a>
+  {% for c in categorias %}<a href="{{ url_for('views.opac', categoria=c) }}">{{ c }}</a>{% endfor %}
+</p>
+{% endif %}
+<p><strong>{{ total }}</strong> livro(s) {{ 'encontrado(s)' if filtrando else 'no acervo' }}.
+  {% if filtrando %}<a href="{{ url_for('views.opac') }}">Limpar busca</a>{% endif %}</p>
+{% if livros %}
+<table>
+  <tr><th>Título</th><th>Autor(es)</th><th>Editora</th><th>ISBN</th><th>Categoria</th><th>Localização</th><th>Disponíveis</th><th></th></tr>
+  {% for l in livros %}
+  <tr>
+    <td>{{ l.titulo }}</td><td>{{ l.autores }}</td><td>{{ l.editora }}</td><td>{{ l.isbn }}</td>
+    <td>{{ l.categoria or '-' }}</td><td>{{ l.localizacao }}</td>
+    <td>{% if disp[l.id] > 0 %}<span class="ok">{{ disp[l.id] }} de {{ l.quantidade }}</span>{% else %}<span class="erro">Indisponível (0 de {{ l.quantidade }})</span>{% endif %}</td>
+    <td>{% if g.usuario %}
+      <form method="post" action="{{ url_for('views.reservar', livro_id=l.id) }}">
+        <button>{{ 'Reservar' if disp[l.id] > 0 else 'Entrar na fila' }}</button></form>
+    {% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% include "_paginacao.html" %}
+{% else %}<p>Nenhum livro encontrado.</p>{% endif %}
+{% if not g.usuario %}<p><a href="{{ url_for('views.login') }}">Entre</a> para reservar livros.</p>{% endif %}
+{% endblock %}

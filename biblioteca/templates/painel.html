@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Minha conta{% endblock %}
+{% block conteudo %}
+<h1>Olá, {{ g.usuario.nome }}</h1>
+<p>Perfil: {{ g.usuario.perfil }}</p>
+
+<h2>Notificações</h2>
+{% if notificacoes %}<ul>{% for n in notificacoes %}<li>{{ n.criada_em.strftime('%d/%m/%Y %H:%M') }} – {{ n.mensagem }}</li>{% endfor %}</ul>
+{% else %}<p>Nenhuma notificação.</p>{% endif %}
+
+<h2>Meus empréstimos</h2>
+{% if emprestimos %}
+<table><tr><th>Livro</th><th>Retirada</th><th>Devolução prevista</th></tr>
+{% for e in emprestimos %}<tr><td>{{ e.livro.titulo }}</td><td>{{ e.data_retirada.strftime('%d/%m/%Y') }}</td><td>{{ e.data_prevista.strftime('%d/%m/%Y') }}</td></tr>{% endfor %}
+</table>{% else %}<p>Nenhum empréstimo ativo.</p>{% endif %}
+
+<h2>Minhas reservas</h2>
+{% if reservas %}
+<table><tr><th>Livro</th><th>Situação</th><th></th></tr>
+{% for r in reservas %}<tr><td>{{ r.livro.titulo }}</td>
+<td>{% if r.status == 'Disponível' %}Disponível para retirada até {{ r.expira_em.strftime('%d/%m/%Y %H:%M') }}{% else %}Na fila – posição {{ posicao(r) }}{% endif %}</td>
+<td><form method="post" action="{{ url_for('views.cancelar_reserva', reserva_id=r.id) }}"><button>Cancelar</button></form></td></tr>{% endfor %}
+</table>{% else %}<p>Nenhuma reserva ativa.</p>{% endif %}
+
+<h2>Minhas multas</h2>
+{% if multas %}
+<table><tr><th>Data</th><th>Livro</th><th>Dias de atraso</th><th>Valor</th></tr>
+{% for m in multas %}<tr><td>{{ m.data.strftime('%d/%m/%Y') }}</td><td>{{ m.emprestimo.livro.titulo }}</td><td>{{ m.dias_atraso }}</td><td>{{ m.valor|brl }}</td></tr>{% endfor %}
+</table>{% else %}<p>Nenhuma multa.</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Usuários{% endblock %}
+{% block conteudo %}
+<h1>Usuários</h1>
+<p><a class="botao" href="{{ url_for('views.usuario_novo') }}">+ Cadastrar usuário</a></p>
+<table>
+  <tr><th>Nome</th><th>Matrícula/CPF</th><th>E-mail</th><th>Perfil</th><th>Cadastro</th><th></th></tr>
+  {% for u in usuarios %}
+  <tr><td>{{ u.nome }}</td><td>{{ u.matricula_cpf }}</td><td>{{ u.email }}</td><td>{{ u.perfil }}</td><td>{{ u.data_cadastro.strftime('%d/%m/%Y') }}</td>
+    <td class="acoes"><a href="{{ url_for('views.usuario_editar', usuario_id=u.id) }}">Editar</a>
+      <form method="post" action="{{ url_for('views.usuario_excluir', usuario_id=u.id) }}" onsubmit="return confirm('Excluir este usuário?')"><button>Excluir</button></form></td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Configurações{% endblock %}
+{% block conteudo %}
+<h1>Configurações</h1>
+<form method="post" class="form">
+  <label>Multa por dia de atraso (R$) <input name="multa_por_dia" value="{{ cfg.multa_por_dia }}" required></label>
+  <label>Prazo de empréstimo (dias) <input name="prazo_emprestimo_dias" type="number" min="1" value="{{ cfg.prazo_emprestimo_dias }}" required></label>
+  <label>Máximo de livros por usuário <input name="max_livros" type="number" min="1" value="{{ cfg.max_livros }}" required></label>
+  <button>Salvar</button>
+</form>
+{% endblock %}

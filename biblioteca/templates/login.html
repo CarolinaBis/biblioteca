@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<h1>Entrar</h1>
+<form method="post" class="form">
+  <label>Matrícula/CPF <input name="matricula_cpf" required autofocus></label>
+  <label>Senha <input name="senha" type="password" required></label>
+  <button>Entrar</button>
+</form>
+<p><a href="{{ url_for('views.recuperar_senha') }}">Esqueci minha senha</a></p>
+{% endblock %}

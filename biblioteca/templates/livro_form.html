@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Novo livro' if novo else 'Editar livro' }}{% endblock %}
+{% block conteudo %}
+<h1>{{ 'Cadastrar livro' if novo else 'Editar livro' }}</h1>
+<form method="post" class="form">
+  <label>Título * <input name="titulo" value="{{ livro.titulo or '' }}" required></label>
+  <label>Autor(es) * <input name="autores" value="{{ livro.autores or '' }}" required></label>
+  <label>Editora * <input name="editora" value="{{ livro.editora or '' }}" required></label>
+  <label>Edição <input name="edicao" value="{{ livro.edicao or '' }}"></label>
+  <label>ISBN * <input name="isbn" value="{{ livro.isbn or '' }}" required></label>
+  <label>Ano de publicação * <input name="ano" type="number" value="{{ livro.ano or '' }}" required></label>
+  <label>Categoria <input name="categoria" value="{{ livro.categoria or '' }}"></label>
+  <label>Localização física * <input name="localizacao" value="{{ livro.localizacao or '' }}" required></label>
+  <label>Quantidade de exemplares * <input name="quantidade" type="number" min="1" value="{{ livro.quantidade or 1 }}" required></label>
+  <label>Sinopse <textarea name="sinopse" rows="4">{{ livro.sinopse or '' }}</textarea></label>
+  <button>Salvar</button> <a href="{{ url_for('views.livros') }}">Cancelar</a>
+</form>
+{% endblock %}

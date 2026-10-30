@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Novo usuário' if novo else 'Editar usuário' }}{% endblock %}
+{% block conteudo %}
+<h1>{{ 'Cadastrar usuário' if novo else 'Editar usuário' }}</h1>
+<form method="post" class="form">
+  <label>Nome * <input name="nome" value="{{ u.nome or '' }}" required></label>
+  <label>Matrícula/CPF * <input name="matricula_cpf" value="{{ u.matricula_cpf or '' }}" required></label>
+  <label>E-mail * <input name="email" type="email" value="{{ u.email or '' }}" required></label>
+  <label>Telefone <input name="telefone" value="{{ u.telefone or '' }}"></label>
+  <label>Endereço <input name="endereco" value="{{ u.endereco or '' }}"></label>
+  <label>Perfil *
+    <select name="perfil">{% for p in perfis %}<option {{ 'selected' if u.perfil == p else '' }}>{{ p }}</option>{% endfor %}</select></label>
+  <label>Senha {{ '*' if novo else '(deixe em branco para manter)' }} <input name="senha" type="password" {{ 'required' if novo else '' }}></label>
+  <button>Salvar</button> <a href="{{ url_for('views.usuarios') }}">Cancelar</a>
+</form>
+{% endblock %}

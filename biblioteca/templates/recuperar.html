@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titulo %}Recuperar senha{% endblock %}
+{% block conteudo %}
+<h1>Recuperar senha</h1>
+<form method="post" class="form">
+  <label>Matrícula/CPF <input name="matricula_cpf" required></label>
+  <label>E-mail cadastrado <input name="email" type="email" required></label>
+  <button>Gerar link de redefinição</button>
+</form>
+{% endblock %}

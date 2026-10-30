@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Biblioteca{% endblock %} – Sistema de Gerenciamento de Biblioteca</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📚%3C/text%3E%3C/svg%3E">
+  <style>
+body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f5f6f8;color:#222}
+header{background:#1f3a5f;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:.7rem 1.2rem;flex-wrap:wrap}
+header a{color:#fff;text-decoration:none;margin-left:1rem}.marca{font-weight:bold;font-size:1.2rem;margin-left:0}
+main{max-width:1100px;margin:1.2rem auto;background:#fff;padding:1.2rem 1.5rem;border-radius:8px}
+table{width:100%;border-collapse:collapse;margin:.8rem 0}th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid #e3e6ea}th{background:#eef1f5}
+.busca{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}.busca input{flex:1;min-width:140px}
+input,select,textarea,button{padding:.45rem .6rem;font:inherit}
+button,.botao{background:#1f3a5f;color:#fff;border:0;border-radius:4px;cursor:pointer;text-decoration:none;padding:.45rem .8rem;display:inline-block}
+.form{display:flex;flex-direction:column;gap:.7rem;max-width:520px}.form label{display:flex;flex-direction:column;gap:.2rem}
+.msg{padding:.6rem .9rem;border-radius:4px;margin-bottom:.8rem}.msg.ok{background:#e3f4e6}.msg.erro{background:#fbe4e4}
+.ok{color:#1b7a2e}.erro{color:#b3261e}form{margin:0}.acoes{display:flex;gap:.6rem;align-items:center}
+/* responsivo: tabelas largas rolam na horizontal em telas pequenas */
+main{overflow-x:auto}
+@media (max-width:640px){main{margin:.5rem;padding:.8rem}header nav a{display:inline-block;margin:.3rem .8rem 0 0}.form{max-width:100%}}
+.categorias a{display:inline-block;margin:0 .5rem .3rem 0;padding:.15rem .6rem;border:1px solid #1f3a5f;border-radius:999px;text-decoration:none;color:#1f3a5f;font-size:.9rem}
+.paginacao{display:flex;gap:1rem;align-items:center;justify-content:center;margin:1rem 0}
+  </style>
+</head>
+<body>
+<header>
+  <a class="marca" href="{{ url_for('views.opac') }}">📚 Biblioteca</a>
+  <nav>
+    <a href="{{ url_for('views.opac') }}">Catálogo</a>
+    {% if g.usuario %}
+      <a href="{{ url_for('views.painel') }}">Minha conta</a>
+      {% if g.usuario.perfil in ('Administrador', 'Bibliotecário') %}
+        <a href="{{ url_for('views.livros') }}">Livros</a>
+        <a href="{{ url_for('views.emprestimos') }}">Empréstimos</a>
+      {% endif %}
+      {% if g.usuario.perfil == 'Administrador' %}
+        <a href="{{ url_for('views.usuarios') }}">Usuários</a>
+        <a href="{{ url_for('views.configuracoes') }}">Configurações</a>
+      {% endif %}
+      <a href="{{ url_for('views.logout') }}">Sair ({{ g.usuario.nome.split()[0] }})</a>
+    {% else %}
+      <a href="{{ url_for('views.login') }}">Entrar</a>
+    {% endif %}
+  </nav>
+</header>
+<main>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<div class="msg {{ cat }}">{{ m }}</div>{% endfor %}
+  {% endwith %}
+  {% block conteudo %}{% endblock %}
+</main>
+</body>
+</html>
