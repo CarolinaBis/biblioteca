@@ -6,7 +6,7 @@ Stack: **Python + Flask + SQLAlchemy**, senhas com **bcrypt**, banco **PostgreSQ
 ## Estrutura
 
 ```
-biblioteca/
+.
 ├── app.py              # aplicação Flask (fábrica `create_app` + ponto de entrada)
 ├── models.py           # tabelas do banco
 ├── services.py         # regras de negócio (empréstimo, multa, reserva, fila...)
@@ -17,7 +17,6 @@ biblioteca/
 ├── requirements.txt    # dependências (versões fixas)
 └── README.md           # este arquivo: como rodar, manual e modelo de dados
 ```
-(Além do `.gitignore`.)
 
 ## Como rodar (local)
 
@@ -164,5 +163,4 @@ Disponibilidade de um livro = `quantidade` − empréstimos em aberto − reserv
 4. Quem pode cadastrar/editar usuários: só o Administrador.
 5. Não há cobrança/quitação de multas (o pacote 3.3 pede apenas cálculo e registro no histórico).
 6. Funcionalidades de apoio do cronograma (UAT, implantação, documentação — AT34 a AT36) não geram código; este README cobre a parte técnica.
-
 
